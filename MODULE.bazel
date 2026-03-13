@@ -1,0 +1,33 @@
+module(
+    name = "python-stock-chart",
+    version = "0.0.1",
+)
+
+bazel_dep(name = "rules_python", version = "1.9.0")
+bazel_dep(name = "rules_oci", version = "2.2.6")
+bazel_dep(name = "rules_pkg", version = "1.0.1")
+bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
+bazel_dep(name = "tar.bzl", version = "0.5.1")
+bazel_dep(name = "platforms", version = "1.0.0")
+
+# pip dependencies
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pip_deps",
+    python_version = "3.11",
+    requirements_lock = "//Python:requirements.txt",
+)
+use_repo(pip, "pip_deps")
+
+# OCI base images
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "distroless_python",
+    image = "index.docker.io/library/python",
+    tag = "3.11-slim",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64/v8",
+    ],
+)
+use_repo(oci, "distroless_python", "distroless_python_linux_amd64", "distroless_python_linux_arm64_v8")

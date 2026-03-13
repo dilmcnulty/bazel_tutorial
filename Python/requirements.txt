@@ -1,0 +1,16 @@
+blinker==1.7.0
+certifi==2024.2.2
+charset-normalizer==3.3.2
+idna==3.6
+requests==2.31.0
+urllib3==2.2.1
+numpy==1.26.4
+pandas==2.2.1
+plotly==5.19.0
+python-dateutil==2.9.0.post0
+six==1.16.0
+pytz==2024.1
+tzdata==2024.1
+tenacity==8.2.3
+packaging==24.0
+ruff==0.15.6
