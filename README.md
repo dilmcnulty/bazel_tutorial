@@ -9,8 +9,7 @@ This build decouples the frontend and backend to prevent build compatibility iss
 There are 3 commands required to build and run the application on Mac.
 
 1. `bazel run //Python:tarball --platforms=//Python:linux_arm64 --noincompatible_enable_cc_toolchain_resolution`
-2. `docker run -p 8080:8080 trading-backend:latest`
-3. `bazel run //Python:viewer`
+2. `bazel run //Python:viewer`
 
 The backend server starts on port 8080, and the frontend POSTs to http://localhost:8080?symbol=AAPL whenever you enter a symbol. The response JSON (the current data dict) is passed straight to build_chart().
 
