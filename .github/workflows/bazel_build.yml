@@ -19,8 +19,16 @@ jobs:
           bazeliskVersion: latest # default is latest
       - name: Build Tarball
         run: bazel build //Python:tarball --platforms=//Python:linux_arm64 --noincompatible_enable_cc_toolchain_resolution
+        with:
+          cache: 'bazel'
       - name: Build Viewer
         run: bazel build //Python:viewer
+        with:
+          cache: 'bazel'
+      - name: Build Tests
+        run: bazel build //Python:split_test
+        with:
+          cache: 'bazel'
   test:
     runs-on: ubuntu-latest
     needs: build
