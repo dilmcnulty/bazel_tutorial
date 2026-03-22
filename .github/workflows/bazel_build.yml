@@ -15,7 +15,7 @@ jobs:
         uses: holvonix-open/setup-bazelisk@v0.6.1
         with:
           # Version of @bazel/bazelisk npm package
-          bazeliskVersion: default # default is latest
+          bazeliskVersion: latest # default is latest
       - name: Build Tarball
         run: bazel build //Python:tarball --platforms=//Python:linux_arm64 --noincompatible_enable_cc_toolchain_resolution
       - name: Build Viewer
