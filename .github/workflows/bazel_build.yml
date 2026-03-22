@@ -1,4 +1,4 @@
-name: Bazel Build
+name: Bazel Build and Test
 on:
   push:
     branches: [ main ]
@@ -21,6 +21,8 @@ jobs:
         run: bazel build //Python:tarball --platforms=//Python:linux_arm64 --noincompatible_enable_cc_toolchain_resolution
       - name: Build Viewer
         run: bazel build //Python:viewer
+      - name: Run Tests
+        run: bazel test //Python:split_test
         
           
       
