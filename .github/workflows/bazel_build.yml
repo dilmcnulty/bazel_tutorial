@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Setup bazelisk for Bazel builds
         # You may pin to the exact commit or the version.
         # uses: holvonix-open/setup-bazelisk@461095abb6f789e6093c2165080d0ce1db13f2ba
