@@ -5,6 +5,8 @@ The application is split into a decoupled backend service and an interactive fro
 
 This build decouples the frontend and backend to prevent build compatibility issues with C extensions like NumPy for pandas. An image is created from client.py and then started with docker
 
+Uses GitHub Actions for CI with Bazel build caching for increased efficiency 
+
 ### Running Application on Mac
 There are 3 commands required to build and run the application on Mac.
 
