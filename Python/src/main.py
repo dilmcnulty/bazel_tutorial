@@ -2,11 +2,24 @@ import os
 import requests
 from flask import Flask, request, jsonify
 from graph import build_chart
+import google.auth.transport.requests
+import google.oauth2.id_token
 
 app = Flask(__name__)
 
 BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8080")
 allowed_symbols = ['AAPL', 'TSLA', 'VTI', 'AMZN']
+
+def call_backend(url):
+    if os.environ.get("K_SERVICE"):
+        # Running in Cloud Run — need auth
+        auth_req = google.auth.transport.requests.Request()
+        token = google.oauth2.id_token.fetch_id_token(auth_req, BACKEND_URL)
+        headers = {"Authorization": f"Bearer {token}"}
+        return requests.post(url, headers=headers)
+    else:
+        # Running locally — no auth needed
+        return requests.post(url)
 
 @app.route("/", methods=["GET"])
 def index():
@@ -23,7 +36,7 @@ def index():
 @app.route("/chart", methods=["GET"])
 def chart():
     symbol = request.args.get("symbol", "").strip().upper()
-    data = requests.post(f"{BACKEND_URL}?symbol={symbol}").json()
+    data = call_backend(f"{BACKEND_URL}?symbol={symbol}").json()
     if len(data) > 0:
         fig = build_chart(data)
         return fig.to_html()

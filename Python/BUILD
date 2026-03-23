@@ -74,7 +74,8 @@ py_binary(
         ":graph",
         requirement("requests"),
         requirement("plotly"),
-        requirement("flask")
+        requirement("flask"),
+        requirement("google-auth")
     ]
 )
 

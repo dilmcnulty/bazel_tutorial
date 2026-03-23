@@ -65,3 +65,10 @@ resource "google_cloud_run_service_iam_binding" "invokers" {
     "user:${data.google_client_openid_userinfo.me.email}"
   ]
 }
+
+resource "google_cloud_run_v2_service_iam_member" "frontend_public" {
+  name     = google_cloud_run_v2_service.frontend.name
+  location = google_cloud_run_v2_service.frontend.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
