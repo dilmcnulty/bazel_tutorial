@@ -5,3 +5,4 @@ bazel-python-stock-chart/
 bazel-testlogs/
 .idea/
 terraform/terraform.tfvars
+terraform/.terraform/
