@@ -36,5 +36,7 @@ jobs:
         registry: gcr.io
         username: _json_key
         password: ${{ secrets.GCR_JSON_KEY }}
+    - name: Get short SHA
+      run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
     - name: Push Images to GCR
-      run: bazel run //Python:push_all
+      run: bazel run //Python:push_all -- --tag ${{ env.SHORT_SHA }}

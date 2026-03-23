@@ -23,7 +23,7 @@ resource "google_cloud_run_v2_service" "backend" {
 
   template {
     containers {
-      image = "gcr.io/${var.project_id}/backend:latest"
+      image = "gcr.io/${var.project_id}/backend:${var.image_tag}"
     }
     service_account = local.service_account_email
   }
@@ -36,7 +36,7 @@ resource "google_cloud_run_v2_service" "frontend" {
 
   template {
     containers {
-      image = "gcr.io/${var.project_id}/frontend:latest"
+      image = "gcr.io/${var.project_id}/frontend:${var.image_tag}"
 
       env {
         name  = "BACKEND_URL"
