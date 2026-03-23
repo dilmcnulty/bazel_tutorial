@@ -41,7 +41,8 @@ class TestSplits(unittest.TestCase):
         self.assertEqual(result['AAPL']['2022-08-24'], 150.0)
         self.assertEqual(result['AAPL']['2022-08-25'], 152.0)
 
-    def ci_test(self):
+    def test_ci(self):
+        print("testing?")
         self.assertEqual(3, 4)
 
 if __name__ == '__main__':

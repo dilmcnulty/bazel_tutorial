@@ -31,7 +31,3 @@ jobs:
         run: bazel build //Python:split_test
       - name: Run Tests
         run: bazel test //Python:split_test
-        
-          
-      
-          
