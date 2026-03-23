@@ -33,4 +33,4 @@ jobs:
           username: _json_key
           password: ${{ secrets.GCR_JSON_KEY }}
       - name: Push Images to GCR
-        run: bazel run //:push_all
+        run: bazel run //Python:push_all
