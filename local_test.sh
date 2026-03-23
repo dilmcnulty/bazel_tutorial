@@ -1,0 +1,1 @@
+bazel build //Python/... && docker run -p 8080:8080 backend:latest & bazel run //Python:viewer

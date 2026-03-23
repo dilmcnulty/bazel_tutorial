@@ -7,7 +7,6 @@ load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
 load("@rules_oci//oci:defs.bzl", "oci_push")
 load("@rules_multirun//:defs.bzl", "command", "multirun")
 
-
 # client backend 
 py_library(
     name = "client_lib",
@@ -52,7 +51,7 @@ oci_push(
 oci_load(
     name = "tarball",
     image = ":backend_image",
-    repo_tags = ["trading-backend:latest"],
+    repo_tags = ["backend:latest"],
 )
 
 # frontend 

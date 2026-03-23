@@ -1,23 +1,21 @@
-import plotly.graph_objects as go 
-import pandas as pd 
+import plotly.graph_objects as go
 
 splits = {
     'TSLA': ('2022-08-25', 3),
     'AMZN': ('2022-06-06', 20)
 }
 
-def build_chart(data: dict[str, list[tuple[str,float]]]): 
-    clean_data = clean_splits(data)   
-    
-    df = pd.DataFrame(clean_data)
-    df = df.reset_index(names='Date')
-    
+def build_chart(data: dict[str, list[tuple[str,float]]]):
+    clean_data = clean_splits(data)
+
     chart = go.Figure()
 
-    for ticker in clean_data.keys():
+    for ticker, price_dict in clean_data.items():
+        dates = list(price_dict.keys())
+        prices = list(price_dict.values())
         chart.add_trace(go.Scatter(
-            x=df['Date'],
-            y=df[ticker],
+            x=dates,
+            y=prices,
             mode='lines',
             name=ticker
         ))
@@ -37,8 +35,10 @@ def build_chart(data: dict[str, list[tuple[str,float]]]):
             rangeslider=dict(visible=True),
             type="date"
         ),
-        title="Stock Data",
-        template="plotly_white"
+        template="plotly_white",
+        autosize=True,
+        height=None,
+        margin=dict(l=50, r=30, t=50, b=50)
     )
 
     return chart 
