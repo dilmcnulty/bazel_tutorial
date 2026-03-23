@@ -26,11 +26,15 @@ jobs:
         run: bazel build //Python/...
       - name: Run Tests
         run: bazel test //Python:split_test
-      - name: Login to Google Cloud
-        uses: docker/login-action@v4
-        with:
-          registry: gcr.io
-          username: _json_key
-          password: ${{ secrets.GCR_JSON_KEY }}
-      - name: Push Images to GCR
-        run: bazel run //Python:push_all
+  push-to-gcr:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+    - name: Login to Google Cloud
+      uses: docker/login-action@v4
+      with:
+        registry: gcr.io
+        username: _json_key
+        password: ${{ secrets.GCR_JSON_KEY }}
+    - name: Push Images to GCR
+      run: bazel run //Python:push_all
