@@ -4,6 +4,9 @@ load("@rules_python//python:defs.bzl", "py_test")
 load("@pip_deps//:requirements.bzl", "requirement")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+load("@rules_oci//oci:defs.bzl", "oci_push")
+load("@rules_multirun//:defs.bzl", "command", "multirun")
+
 
 # client backend 
 py_library(
@@ -39,6 +42,13 @@ oci_image(
     entrypoint = ["/Python/client_app"],
 )
 
+oci_push(
+    name = "push_backend",
+    image = ":backend_image",
+    repository = "gcr.io/beaming-signal-486322-k2/backend",
+    remote_tags = ["latest"],
+)
+
 oci_load(
     name = "tarball",
     image = ":backend_image",
@@ -64,6 +74,41 @@ py_binary(
         ":graph",
         requirement("requests"),
         requirement("plotly")
+    ]
+)
+
+# dockerized frontend
+pkg_tar(
+    name = "frontend-tar",
+    srcs = [":viewer"],
+    include_runfiles = True,
+    package_dir = "/",
+    strip_prefix = "Python"
+)
+
+oci_image(
+    name = "frontend",
+    base = "@distroless_python",
+    tars = [":frontend-tar"],
+    entrypoint = ["/Python/viewer"]
+)
+
+
+oci_push(
+    name = "push_frontend",
+    image = ":frontend",
+    repository = "gcr.io/beaming-signal-486322-k2/frontend",
+    remote_tags = ["latest"],
+)
+
+command(name = "push_frontend_cmd", command = ":push_frontend")
+command(name = "push_backend_cmd", command = ":push_backend")
+
+multirun(
+    name = "push_all",
+    commands = [
+        ":push_frontend_cmd",
+        ":push_backend_cmd"
     ]
 )
 
