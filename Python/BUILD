@@ -73,7 +73,8 @@ py_binary(
     deps = [
         ":graph",
         requirement("requests"),
-        requirement("plotly")
+        requirement("plotly"),
+        requirement("flask")
     ]
 )
 

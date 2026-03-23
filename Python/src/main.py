@@ -1,19 +1,33 @@
+import os
 import requests
+from flask import Flask, request, jsonify
 from graph import build_chart
 
-BACKEND_URL = "http://localhost:8080"
+app = Flask(__name__)
+
+BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8080")
 allowed_symbols = ['AAPL', 'TSLA', 'VTI', 'AMZN']
 
-while True:
-    print(f"Available Symbols: {allowed_symbols}")
-    symbol = input('Enter a US symbol to display or remove from the currently displayed list, or \'quit\': ').strip().upper()
+@app.route("/", methods=["GET"])
+def index():
+    return f"""
+    <html><body>
+        <h3>Available Symbols: {', '.join(allowed_symbols)}</h3>
+        <form action="/chart" method="get">
+            <input name="symbol" placeholder="Enter symbol" />
+            <button type="submit">Show Chart</button>
+        </form>
+    </body></html>
+    """
 
-    if symbol == 'QUIT':
-        break
-
+@app.route("/chart", methods=["GET"])
+def chart():
+    symbol = request.args.get("symbol", "").strip().upper()
     data = requests.post(f"{BACKEND_URL}?symbol={symbol}").json()
     if len(data) > 0:
-        chart = build_chart(data)
-        chart.show()
+        fig = build_chart(data)
+        return fig.to_html()
+    return "No data found for that symbol."
 
-
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8081)
